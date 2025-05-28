@@ -61,7 +61,7 @@ public class Main {
             zipOutputStream.closeEntry();
 
             for (ClassFile classFile : classFiles) {
-                ZipEntry zipEntry = new ZipEntry(classFile.fullName + ".class");
+                ZipEntry zipEntry = new ZipEntry(classFile.fullName.replace(".", "/") + ".class");
                 zipOutputStream.putNextEntry(zipEntry);
                 zipOutputStream.write(classFile.data);
                 zipOutputStream.closeEntry();
