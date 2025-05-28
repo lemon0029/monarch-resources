@@ -19,7 +19,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         String userDir = System.getProperty("user.dir");
-        process(userDir + "/package-files/input/1.63.0109");
+        process(userDir + "/package-files/input/1.63.0109.zip");
         process(userDir + "/package-files/input/com.gamebox.kingSanguoAppstore-1.62.0428.ipa");
         process(userDir + "/package-files/input/com.gamebox.kingSanguoAppstore-1.61.1206.ipa");
         process(userDir + "/package-files/input/com.gameme5.www_1.60.0617_und3fined.ipa");
@@ -42,6 +42,10 @@ public class Main {
     private static void collectToJar(String packageVersion, List<ClassFile> classFiles) throws IOException {
         String userDir = System.getProperty("user.dir");
         Path outputFile = Path.of(userDir, "package-files", "output", "dwsg-client-%s.jar".formatted(packageVersion));
+
+        if (Files.exists(outputFile)) {
+            return;
+        }
 
         Path outputDir = outputFile.getParent();
         if (Files.notExists(outputDir)) {

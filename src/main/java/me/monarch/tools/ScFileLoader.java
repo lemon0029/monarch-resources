@@ -26,24 +26,24 @@ public class ScFileLoader {
     }
 
     private static List<ScFile> loadFromFile(Path path) throws IOException {
-        if (!path.toString().endsWith(".ipa")) {
-            throw new IllegalStateException("File is not an ipa");
-        }
-
         FileSystem fileSystem = FileSystems.newFileSystem(path);
         Path payload = fileSystem.getPath("Payload");
 
-        BiPredicate<Path, BasicFileAttributes> predicate = (pt, bfa) -> pt.toString().endsWith(".app");
-        Stream<Path> stream = Files.find(payload, 1, predicate);
+        if (Files.exists(payload)) {
+            BiPredicate<Path, BasicFileAttributes> predicate = (pt, bfa) -> pt.toString().endsWith(".app");
+            Stream<Path> stream = Files.find(payload, 1, predicate);
 
-        try {
-
-            Path app = stream.findFirst().orElseThrow();
-            return loadFromDirectory(app);
-        } finally {
-            stream.close();
-            fileSystem.close();
+            try {
+                Path app = stream.findFirst().orElseThrow();
+                return loadFromDirectory(app);
+            } finally {
+                stream.close();
+                fileSystem.close();
+            }
         }
+
+        String rootDir = path.getFileName().toString().replace(".zip", "");
+        return loadFromDirectory(fileSystem.getPath(rootDir));
     }
 
     private static List<ScFile> loadFromDirectory(Path root) throws IOException {
@@ -79,7 +79,7 @@ public class ScFileLoader {
                 ScFile scFile = new ScFile();
                 int idx = path.toString().indexOf("scriptPages/");
                 scFile.packageVersion = packageVersion;
-                scFile.fullName =  path.toString().substring(idx + 12);
+                scFile.fullName = path.toString().substring(idx + 12);
                 scFile.simpleName = path.getFileName().toString();
                 scFile.content = Files.readAllBytes(path);
 
