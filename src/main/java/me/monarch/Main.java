@@ -20,6 +20,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String userDir = System.getProperty("user.dir");
         process(userDir + "/package-files/input/1.63.0109.zip");
+        process(userDir + "/package-files/input/1.64.0518.zip");
         process(userDir + "/package-files/input/com.gamebox.kingSanguoAppstore-1.62.0428.ipa");
         process(userDir + "/package-files/input/com.gamebox.kingSanguoAppstore-1.61.1206.ipa");
         process(userDir + "/package-files/input/com.gameme5.www_1.60.0617_und3fined.ipa");

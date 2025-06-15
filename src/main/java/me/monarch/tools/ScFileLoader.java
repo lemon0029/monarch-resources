@@ -42,8 +42,7 @@ public class ScFileLoader {
             }
         }
 
-        String rootDir = path.getFileName().toString().replace(".zip", "");
-        return loadFromDirectory(fileSystem.getPath(rootDir));
+        return loadFromDirectory(fileSystem.getPath("/"));
     }
 
     private static List<ScFile> loadFromDirectory(Path root) throws IOException {
